@@ -65,3 +65,27 @@ def enrollment_index(request):
         "enrollments": enrollments
     }
     return render(request, "registration/enrollment_index.html", context)
+
+
+def course_detail(request, pk):
+    course = Course.objects.get(pk=pk)
+    context = {
+        "course": course
+    }
+    return render(request, "registration/course_detail.html", context)
+
+
+def student_detail(request, pk):
+    student = Student.objects.get(pk=pk)
+    context = {
+        "student": student
+    }
+    return render(request, "registration/student_detail.html", context)
+
+
+def enrollment_detail(request, pk):
+    enrollment = Enrollment.objects.get(pk=pk)
+    context = {
+        "enrollment": enrollment
+    }
+    return render(request, "registration/enrollment_detail.html", context)
