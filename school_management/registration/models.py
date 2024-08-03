@@ -25,6 +25,6 @@ class Course(models.Model):
 
 
 class Enrollment(models.Model):
-    student = Student
-    course = Course
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, null=True)
+    course = models.ForeignKey(Course, on_delete=models.PROTECT, null=True)
     date = models.DateField()
