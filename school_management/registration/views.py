@@ -1,5 +1,10 @@
-from django.shortcuts import render
+import random
+
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
 from registration.models import User, Student, Course, Enrollment
+from .forms import UserForm, StudentForm, CourseForm
+
 
 # Create your views here.
 
@@ -11,28 +16,88 @@ from registration.models import User, Student, Course, Enrollment
 # as a template
 
 
+def generate_verification_code():
+    return str(random.randint(100000, 999999))
+
+
+def send_verification_email(user):
+    code = generate_verification_code()
+    user.verification_code = code
+    user.save()
+    send_mail(
+        'Your Verification Code',
+        f'Your verification code is {code}',
+        'from@example.com',
+        [user.email],
+    )
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password('temporarypassword')
+            user.save()
+            send_verification_email(user)
+            return redirect('verify')
+    else:
+        form = UserForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+
+def verify_view(request):
+    if request.method == 'POST':
+        code = request.POST['code']
+        try:
+            user = User.objects.get(verification_code=code)
+            user.is_verified = True
+            user.save()
+            return redirect('home')
+        except User.DoesNotExist:
+            pass
+    return render(request, 'verify.html')
+
+
 def home(request):
     return render(request, "registration/home.html", {})
 
 
-def login(request):
-    return render(request, "registration/login.html", {})
+def create_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('user_list')
+    else:
+        form = UserForm()
+    return render(request, 'registration/create_user.html', {'form': form})
 
 
-def user(request):
-    return render(request, "registration/user.html", {})
+def create_course(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('course_list')
+    else:
+        form = CourseForm()
+    return render(request, 'registration/create_course.html', {'form': form})
 
 
-def course(request):
-    return render(request, "registration/course.html", {})
+def create_enrollment(request):
+    return render(request, "registration/create_enrollment.html", {})
 
 
-def enrollment(request):
-    return render(request, "registration/enrollment.html", {})
-
-
-def student(request):
-    return render(request, "registration/student.html", {})
+def create_student(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student_list')
+    else:
+        form = StudentForm()
+    return render(request, 'registration/create_student.html', {'form': form})
 
 
 def course_index(request):
