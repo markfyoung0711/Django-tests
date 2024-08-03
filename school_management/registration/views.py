@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from registration.models import User, Student, Course
+from registration.models import User, Student, Course, Enrollment
 
 # Create your views here.
 
@@ -57,3 +57,11 @@ def user_index(request):
         "users": users
     }
     return render(request, "registration/user_index.html", context)
+
+
+def enrollment_index(request):
+    enrollments = Enrollment.objects.all()
+    context = {
+        "enrollments": enrollments
+    }
+    return render(request, "registration/enrollment_index.html", context)
