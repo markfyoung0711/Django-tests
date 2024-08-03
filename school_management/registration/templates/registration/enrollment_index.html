@@ -1,0 +1,23 @@
+<!-- registration/templates/registration/enrollment_index.html -->
+
+{% extends "base.html" %}
+
+{% block page_content %}
+<h1>Enrollments</h1>
+<div class="row">
+{% for enrollment in enrollments %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ enrollment.id }}, {{ enrollment.course.name }}</h5>
+                <p class="card-text">{{ enrollment.student.last_name }}, {{ enrollment.student.first_name }}</p>
+                <a href="{% url 'enrollment_detail' enrollment.pk %}"
+                   class="btn btn-primary">
+                    Read More
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

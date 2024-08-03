@@ -1,0 +1,23 @@
+<!-- registration/templates/registration/student_index.html -->
+
+{% extends "base.html" %}
+
+{% block page_content %}
+<h1>Students</h1>
+<div class="row">
+{% for student in students %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ student.last_name }}, {{ student.first_name }}</h5>
+                <p class="card-text">No description on the student</p>
+                <a href="{% url 'student_detail' student.pk %}"
+                   class="btn btn-primary">
+                    Read More
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
