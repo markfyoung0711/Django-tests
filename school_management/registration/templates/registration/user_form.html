@@ -1,0 +1,15 @@
+{% extends 'your_app/base.html' %}
+
+{% block title %}User Form{% endblock %}
+
+{% block content %}
+<h2>User Form</h2>
+<form method="post" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        {{ form.email|as_crispy_field }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

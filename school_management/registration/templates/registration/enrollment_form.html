@@ -1,0 +1,19 @@
+{% extends 'your_app/base.html' %}
+
+{% block title %}Enrollment Form{% endblock %}
+
+{% block content %}
+<h2>Enrollment Form</h2>
+<form method="post" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="student" class="form-label">Student</label>
+        {{ form.student|as_crispy_field }}
+    </div>
+    <div class="mb-3">
+        <label for="course" class="form-label">Course</label>
+        {{ form.course|as_crispy_field }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
