@@ -33,6 +33,8 @@ def send_verification_email(user):
 
 
 def login_view(request):
+    print('i am here')
+    print(f'request.method={request.method}')
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -43,6 +45,7 @@ def login_view(request):
             return redirect('verify')
     else:
         form = UserForm()
+    print('about to render')
     return render(request, 'registration/login.html', {'form': form})
 
 
@@ -64,6 +67,7 @@ def home(request):
 
 
 def create_user(request):
+    print(f'request.method={request.method}')
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -94,9 +98,9 @@ def create_student(request):
         form = StudentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('student_list')
+            return redirect('student_index')
     else:
-        form = StudentForm()
+        form = StudentForm(request.POST)
     return render(request, 'registration/create_student.html', {'form': form})
 
 

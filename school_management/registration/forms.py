@@ -15,14 +15,14 @@ class UserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
+        self.helper = FormHelper(self)
+        self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Submit'))
 
 
 class StudentForm(forms.ModelForm):
     class Meta:
-        model = Student
+        model = User
         fields = ['username', 'password', 'email']
         widgets = {
             'password': forms.PasswordInput(),
@@ -30,9 +30,13 @@ class StudentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.model = Student
         self.helper = FormHelper()
-        self.helper.form_method = 'post'
+        self.helper.form_action = 'create_student_form'
         self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
 
 
 class CourseForm(forms.ModelForm):
